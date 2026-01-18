@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Arko Frontend
+
+A sleek, Mr. Robot-inspired chat interface for the Arko AI Agency.
+
+## Features
+
+- 🎨 Black/Neon Green aesthetic with glowing effects
+- ⚡ Real-time streaming responses via SSE
+- 🤖 Agent delegation indicators
+- 📱 Responsive design
+- ⌨️ Keyboard shortcuts (Enter to send, Shift+Enter for new line)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js v20+
+- Arko backend running on `http://localhost:8080`
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file:
 
-## Learn More
+```bash
+NEXT_PUBLIC_ARKO_API_URL=http://localhost:8080
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Framework:** Next.js 14 (App Router)
+- **Styling:** Tailwind CSS
+- **Animations:** Framer Motion
+- **State:** Zustand
+- **Streaming:** Server-Sent Events (SSE)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+app/
+├── layout.tsx          # Root layout
+├── page.tsx            # Main chat page
+└── globals.css         # Global styles
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+components/chat/
+├── ChatContainer.tsx   # Main chat wrapper
+├── MessageList.tsx     # Message history
+├── Message.tsx         # Message bubbles
+├── StreamingText.tsx   # Typewriter effect
+├── AgentPill.tsx       # Agent delegation indicator
+└── InputBox.tsx        # Message input
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+lib/
+├── api.ts              # Arko API client
+├── store.ts            # Zustand state management
+└── types.ts            # TypeScript interfaces
+```
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push to GitHub
+2. Import project in Vercel
+3. Add environment variable: `NEXT_PUBLIC_ARKO_API_URL`
+4. Deploy
+
+### Build Locally
+
+```bash
+npm run build
+npm start
+```
+
+## Customization
+
+### Colors
+
+Edit `tailwind.config.ts` to customize the neon green theme:
+
+```typescript
+colors: {
+  neon: {
+    green: "#00ff41",    // Change primary accent
+    dim: "#00cc33",      // Change hover/active states
+  }
+}
+```
+
+### Fonts
+
+Fonts are loaded via Google Fonts in `globals.css`. Change to different fonts by updating the `@import` URL.
+
+## License
+
+MIT
