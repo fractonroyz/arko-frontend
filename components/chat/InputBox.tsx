@@ -43,13 +43,9 @@ export function InputBox() {
           accumulatedContent += chunk;
           updateMessage(assistantMessageId, accumulatedContent);
         },
-        (from, to) => {
-          // Handle agent delegation
-          useChatStore.setState({
-            currentAgent: { from, to, timestamp: Date.now() },
-          });
-        },
+        undefined, // Agent delegation callback
         (error) => {
+          console.error("Stream error:", error);
           setError(error.message);
           updateMessage(
             assistantMessageId,
@@ -65,12 +61,12 @@ export function InputBox() {
       );
       useChatStore.setState({ messages: updatedMessages });
     } catch (error) {
+      console.error("Submit error:", error);
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error occurred";
       setError(errorMessage);
     } finally {
       setLoading(false);
-      useChatStore.setState({ currentAgent: null });
     }
   };
 
@@ -82,26 +78,26 @@ export function InputBox() {
   };
 
   return (
-    <div className="border-t border-bg-tertiary px-4 py-3">
-      <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-        <div className="relative flex items-end gap-2">
+    <div className="border-t border-bg-tertiary px-4 py-4">
+      <form onSubmit={handleSubmit}>
+        <div className="relative">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Message Arko..."
+            placeholder="Ask anything"
             rows={1}
             disabled={isLoading}
-            className="flex-1 bg-bg-secondary text-text-primary placeholder-text-tertiary rounded-lg px-4 py-2.5 pr-10 resize-none focus:outline-none focus:ring-1 focus:ring-neon-dim transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-            style={{ minHeight: "44px", maxHeight: "200px" }}
+            className="w-full bg-bg-secondary text-text-primary placeholder-text-tertiary rounded-3xl px-5 py-3 pr-12 resize-none focus:outline-none focus:ring-1 focus:ring-bg-tertiary transition-all disabled:opacity-50 text-[15px]"
+            style={{ minHeight: "52px", maxHeight: "200px" }}
           />
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="absolute right-2 bottom-2.5 p-1.5 rounded-md bg-bg-tertiary hover:bg-neon-dim disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="absolute right-3 bottom-3 p-2 rounded-full bg-neon-dim hover:bg-neon-green disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             <svg
-              className="w-4 h-4 text-neon-green"
+              className="w-4 h-4 text-bg-primary"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -110,7 +106,7 @@ export function InputBox() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                d="M5 10l7-7m0 0l7 7m-7-7v18"
               />
             </svg>
           </button>

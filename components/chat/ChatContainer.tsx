@@ -1,24 +1,22 @@
 "use client";
 
-import { Sidebar } from "../Sidebar";
 import { MessageList } from "./MessageList";
 import { InputBox } from "./InputBox";
 
 export function ChatContainer() {
   return (
     <div className="flex h-screen bg-bg-primary">
-      {/* Left Sidebar */}
-      <Sidebar />
-
-      {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Chat Messages */}
-        <div className="flex-1 overflow-hidden">
+      {/* Main Chat Area - Centered */}
+      <div className="flex-1 flex flex-col items-center">
+        {/* Chat Messages - Max width container */}
+        <div className="w-full max-w-3xl flex-1 overflow-hidden">
           <MessageList />
         </div>
 
-        {/* Input Box */}
-        <InputBox />
+        {/* Input Box - Max width container */}
+        <div className="w-full max-w-3xl">
+          <InputBox />
+        </div>
       </div>
     </div>
   );
