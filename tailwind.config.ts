@@ -9,40 +9,53 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Near-black background
         bg: {
-          primary: "#0a0a0a",
-          secondary: "#111111",
+          primary: "#0d0d0d",
+          secondary: "#151515",
           tertiary: "#1a1a1a",
+          elevated: "#202020",
         },
-        neon: {
-          green: "#00ff41",
-          dim: "#00cc33",
-          glow: "#00ff4133",
-        },
+        // Muted grays for text
         text: {
-          primary: "#e0e0e0",
-          secondary: "#808080",
-          tertiary: "#404040",
+          primary: "#d4d4d4",
+          secondary: "#8a8a8a",
+          tertiary: "#5a5a5a",
+          ghost: "#3a3a3a",
         },
-        error: "#ff0055",
-        warning: "#ffaa00",
+        // Minimal accent - only for states
+        accent: {
+          dim: "#2a4a2a",
+          base: "#3a5a3a",
+          bright: "#4a6a4a",
+        },
+        // Borders
+        border: {
+          subtle: "#1f1f1f",
+          visible: "#2a2a2a",
+        },
       },
       fontFamily: {
-        mono: ["JetBrains Mono", "Courier New", "monospace"],
-        sans: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        mono: ["IBM Plex Mono", "Courier New", "monospace"],
       },
-      boxShadow: {
-        neon: "0 0 10px rgba(0, 255, 65, 0.3), 0 0 20px rgba(0, 255, 65, 0.1)",
-        "neon-strong": "0 0 20px rgba(0, 255, 65, 0.5), 0 0 40px rgba(0, 255, 65, 0.2)",
+      fontSize: {
+        xs: ["13px", { lineHeight: "1.5" }],
+        sm: ["14px", { lineHeight: "1.6" }],
+        base: ["15px", { lineHeight: "1.6" }],
+        lg: ["17px", { lineHeight: "1.6" }],
+        xl: ["20px", { lineHeight: "1.5" }],
+      },
+      spacing: {
+        section: "clamp(2rem, 5vw, 4rem)",
       },
       animation: {
-        pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "slide-in": "slideIn 0.3s ease-out",
+        "fade-in": "fadeIn 0.3s ease-out",
       },
       keyframes: {
-        slideIn: {
-          "0%": { transform: "translateY(10px)", opacity: "0" },
-          "100%": { transform: "translateY(0)", opacity: "1" },
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(4px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
     },

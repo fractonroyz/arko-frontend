@@ -1,13 +1,22 @@
 "use client";
 
-import { useState, FormEvent, KeyboardEvent } from "react";
+import { useState, FormEvent, KeyboardEvent, useRef, useEffect } from "react";
 import { useChatStore } from "@/lib/store";
 import { arkoAPI } from "@/lib/api";
 
 export function InputBox() {
   const [input, setInput] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { addMessage, updateMessage, setLoading, setError, isLoading } =
     useChatStore();
+
+  // Auto-resize textarea
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [input]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -16,6 +25,11 @@ export function InputBox() {
     const userMessage = input.trim();
     setInput("");
     setError(null);
+
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
 
     // Add user message
     addMessage({
@@ -28,7 +42,7 @@ export function InputBox() {
     addMessage({
       role: "assistant",
       content: "",
-      agentName: "Arko",
+      agentName: "System",
       isStreaming: true,
     });
 
@@ -43,13 +57,13 @@ export function InputBox() {
           accumulatedContent += chunk;
           updateMessage(assistantMessageId, accumulatedContent);
         },
-        undefined, // Agent delegation callback
+        undefined,
         (error) => {
-          console.error("Stream error:", error);
+          console.error("[InputBox] Error:", error);
           setError(error.message);
           updateMessage(
             assistantMessageId,
-            `Error: ${error.message}. Please try again.`
+            `Connection failed: ${error.message}`
           );
         }
       );
@@ -61,9 +75,9 @@ export function InputBox() {
       );
       useChatStore.setState({ messages: updatedMessages });
     } catch (error) {
-      console.error("Submit error:", error);
+      console.error("[InputBox] Catch error:", error);
       const errorMessage =
-        error instanceof Error ? error.message : "Unknown error occurred";
+        error instanceof Error ? error.message : "Unknown error";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -78,39 +92,42 @@ export function InputBox() {
   };
 
   return (
-    <div className="border-t border-bg-tertiary px-4 py-4">
-      <form onSubmit={handleSubmit}>
-        <div className="relative">
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Ask anything"
-            rows={1}
-            disabled={isLoading}
-            className="w-full bg-bg-secondary text-text-primary placeholder-text-tertiary rounded-3xl px-5 py-3 pr-12 resize-none focus:outline-none focus:ring-1 focus:ring-bg-tertiary transition-all disabled:opacity-50 text-[15px]"
-            style={{ minHeight: "52px", maxHeight: "200px" }}
-          />
-          <button
-            type="submit"
-            disabled={!input.trim() || isLoading}
-            className="absolute right-3 bottom-3 p-2 rounded-full bg-neon-dim hover:bg-neon-green disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-          >
-            <svg
-              className="w-4 h-4 text-bg-primary"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 10l7-7m0 0l7 7m-7-7v18"
-              />
-            </svg>
-          </button>
-        </div>
+    <div className="px-6 py-4">
+      <form onSubmit={handleSubmit} className="relative">
+        <textarea
+          ref={textareaRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Enter query"
+          disabled={isLoading}
+          rows={1}
+          className="w-full bg-bg-secondary text-text-primary placeholder-text-ghost 
+                     border border-border-visible rounded-none
+                     px-4 py-3 pr-12
+                     resize-none
+                     focus:border-accent-dim focus:bg-bg-tertiary
+                     disabled:opacity-50 disabled:cursor-not-allowed
+                     transition-colors duration-200
+                     font-sans text-base"
+          style={{ 
+            minHeight: "52px",
+            maxHeight: "200px",
+            overflow: "hidden"
+          }}
+        />
+        <button
+          type="submit"
+          disabled={!input.trim() || isLoading}
+          className="absolute right-3 bottom-6
+                     px-2 py-1
+                     text-text-tertiary hover:text-text-primary
+                     disabled:opacity-30 disabled:cursor-not-allowed
+                     transition-colors duration-150
+                     text-sm font-mono"
+        >
+          {isLoading ? "..." : "→"}
+        </button>
       </form>
     </div>
   );

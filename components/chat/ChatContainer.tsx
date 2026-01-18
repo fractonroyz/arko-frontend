@@ -5,16 +5,17 @@ import { InputBox } from "./InputBox";
 
 export function ChatContainer() {
   return (
-    <div className="flex h-screen bg-bg-primary">
-      {/* Main Chat Area - Centered */}
-      <div className="flex-1 flex flex-col items-center">
-        {/* Chat Messages - Max width container */}
-        <div className="w-full max-w-3xl flex-1 overflow-hidden">
+    <div className="flex flex-col h-screen bg-bg-primary">
+      {/* Main conversation - centered, no chrome */}
+      <main className="flex-1 flex flex-col items-center overflow-hidden">
+        <div className="w-full max-w-[46rem] flex flex-col h-full">
           <MessageList />
         </div>
+      </main>
 
-        {/* Input Box - Max width container */}
-        <div className="w-full max-w-3xl">
+      {/* Input - fixed bottom, centered */}
+      <div className="flex justify-center border-t border-border-subtle">
+        <div className="w-full max-w-[46rem]">
           <InputBox />
         </div>
       </div>

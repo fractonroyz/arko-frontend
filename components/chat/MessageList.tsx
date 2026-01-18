@@ -9,7 +9,7 @@ export function MessageList() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
   useEffect(() => {
@@ -17,13 +17,18 @@ export function MessageList() {
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      <div className="px-4 py-8 space-y-4">
+    <div className="flex-1 overflow-y-auto px-6">
+      <div className="py-section space-y-8">
         {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-[60vh] text-center">
-            <h1 className="text-3xl font-semibold text-text-primary mb-4">
-              Where should we begin?
-            </h1>
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <div className="text-center max-w-md">
+              <h1 className="text-xl text-text-primary font-medium mb-2">
+                Ready
+              </h1>
+              <p className="text-sm text-text-tertiary">
+                Intelligence workspace active
+              </p>
+            </div>
           </div>
         )}
 

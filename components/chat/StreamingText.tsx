@@ -17,7 +17,9 @@ export function StreamingText({ text, isComplete = false }: StreamingTextProps) 
   return (
     <span className="whitespace-pre-wrap">
       {displayedText}
-      {!isComplete && <span className="animate-typing text-neon-green"></span>}
+      {!isComplete && (
+        <span className="inline-block w-[2px] h-[1em] bg-text-secondary ml-[2px] animate-pulse" />
+      )}
     </span>
   );
 }
